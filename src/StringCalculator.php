@@ -10,6 +10,8 @@ class StringCalculator
             return 0;
         }
 
-        return (int) $numbers;
+        $numbers = explode(',', $numbers);
+
+        return (int) array_sum($numbers);
     }
 }
