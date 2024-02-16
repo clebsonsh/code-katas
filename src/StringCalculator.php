@@ -10,7 +10,7 @@ class StringCalculator
             return 0;
         }
 
-        $numbers = explode(',', $numbers);
+        $numbers = preg_split('/,|\n/', $numbers);
 
         return (int) array_sum($numbers);
     }
