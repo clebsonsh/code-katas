@@ -18,6 +18,10 @@ class StringCalculator
             }
         }
 
+        $numbers = array_filter($numbers, function ($number) {
+            return $number <= 1000;
+        });
+
         return (int) array_sum($numbers);
     }
 }
