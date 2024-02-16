@@ -32,3 +32,9 @@ dataset('numbers', [
     ['1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20', 210],
     ['1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25', 325],
 ]);
+
+it('accepts new lines as valid delimiters', function () {
+    $calculator = new StringCalculator();
+
+    expect($calculator->add("5\n5"))->toBe(10);
+});
