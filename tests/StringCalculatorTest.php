@@ -38,3 +38,9 @@ it('accepts new lines as valid delimiters', function () {
 
     expect($calculator->add("5\n5"))->toBe(10);
 });
+
+it('negative numbers throw an exception', function () {
+    $calculator = new StringCalculator();
+
+    $calculator->add('5,-5');
+})->throws(\Exception::class);
