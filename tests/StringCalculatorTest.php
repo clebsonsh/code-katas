@@ -13,3 +13,9 @@ it('finds the sum of one number', function () {
 
     expect($calculator->add('5'))->toBe(5);
 });
+
+it('finds the sum of two numbers', function () {
+    $calculator = new StringCalculator();
+
+    expect($calculator->add('5,5'))->toBe(10);
+});
