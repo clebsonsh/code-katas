@@ -43,4 +43,4 @@ it('negative numbers throw an exception', function () {
     $calculator = new StringCalculator();
 
     $calculator->add('5,-5');
-})->throws(\Exception::class);
+})->throws(\Exception::class, 'Negatives not allowed -5');
