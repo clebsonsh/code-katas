@@ -2,6 +2,8 @@
 
 use App\StringCalculator;
 
+use Exception;
+
 it('evaluates a empty string as 0', function () {
     $calculator = new StringCalculator();
 
@@ -43,7 +45,7 @@ it('negative numbers throw an exception', function () {
     $calculator = new StringCalculator();
 
     $calculator->add('5,-5');
-})->throws(\Exception::class, 'Negatives not allowed -5');
+})->throws(Exception::class, 'Negatives not allowed -5');
 
 it('numbers bigger than 1000 should be ignored', function () {
     $calculator = new StringCalculator();

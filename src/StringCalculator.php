@@ -2,33 +2,48 @@
 
 namespace App;
 
+use Exception;
+
 class StringCalculator
 {
+    const MAX_NUMBER_ALLOWED = 1000;
+
+    protected string $delimeter = ',|\n';
+
     public function add(string $numbers): int
     {
-        $delimeter = ',|\n';
+        $numbers = $this->parseString($numbers);
 
-        if (!$numbers) {
-            return 0;
-        }
+        $this->disallowNegatives($numbers);;
 
-        if (preg_match('/^\/\/(.)\n/', $numbers, $matches)) {
-            $delimeter = $matches[1];
+        return (int) array_sum(
+            $this->ignoreGreaterThan1000($numbers)
+        );
+    }
+
+    protected function parseString(string $numbers): array
+    {
+        $customeDelimeter = '^\/\/(.)\n';
+
+        if (preg_match("/$customeDelimeter/", $numbers, $matches)) {
+            $this->delimeter = $matches[1];
             $numbers = str_replace($matches[0], '', $numbers);
         }
 
-        $numbers = preg_split("/$delimeter/", $numbers);
+        return preg_split("/{$this->delimeter}/", $numbers);
+    }
 
-        foreach ($numbers as $number) {
-            if ($number < 0) {
-                throw new \Exception('Negatives not allowed ' . $number);
+    protected function disallowNegatives(array $numbers): void
+    {
+        array_walk($numbers, function ($number) {
+            if ((int) $number < 0) {
+                throw new Exception('Negatives not allowed ' . $number);
             }
-        }
-
-        $numbers = array_filter($numbers, function ($number) {
-            return $number <= 1000;
         });
+    }
 
-        return (int) array_sum($numbers);
+    protected function ignoreGreaterThan1000(array $numbers): array
+    {
+        return array_filter($numbers, fn ($number) => $number <= self::MAX_NUMBER_ALLOWED);
     }
 }
