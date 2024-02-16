@@ -50,3 +50,9 @@ it('numbers bigger than 1000 should be ignored', function () {
 
     expect($calculator->add('5,1001'))->toBe(5);
 });
+
+it('it supports custom delimiters', function () {
+    $calculator = new StringCalculator();
+
+    expect($calculator->add("//:\n5:5"))->toBe(10);
+});
