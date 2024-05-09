@@ -29,43 +29,48 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - uses: GuillaumeFalourd/command-output-file-action@v1.1
+    - name: Run PHP Stan and save output to file
+      uses: GuillaumeFalourd/command-output-file-action@v1.1
       env:
         PHP_STAN_LEVEL: 0
       with:
         command_line: vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src
         output_file_name: phpstan.txt
 
-    - name: PHPStan
+    - name: Read PHP Stan errors and save count to PHP_STAN_ERRORS_COUNT
       run: |
         echo "PHP_STAN_ERRORS_COUNT=$(cat ./phpstan.txt | grep -o -i ::error | wc -w)" >> $GITHUB_ENV
       continue-on-error: true
     
-    - name: Comment PR
+    - name: Comment PR if there are PHP Stan errors
       if: env.PHP_STAN_ERRORS_COUNT > 0
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           PHPStan -> ${{env.PHP_STAN_ERRORS_COUNT}} errors found. Please fix them before merging.
 
-    - uses: GuillaumeFalourd/command-output-file-action@v1.1
+    - name: Break if there are PHP Stan errors
+      run: |
+        if [ ${{env.PHP_STAN_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
+
+    - name: Run PHP Unit and save output to file
+      uses: GuillaumeFalourd/command-output-file-action@v1.1
       with:
         command_line: vendor/bin/pest --no-coverage 
         output_file_name: phpunit.txt
 
-    - name: Run test suite
+    - name: Read PHP Unit errors and save count to PHP_UNIT_ERRORS_COUNT
       run: |
         echo "PHP_UNIT_ERRORS_COUNT=$(cat ./phpunit.txt | grep FAILED | wc -l)" >> $GITHUB_ENV
       continue-on-error: true
 
-    - name: Comment PR
+    - name: Comment PR if there are PHP Unit errors
       if: env.PHP_UNIT_ERRORS_COUNT > 0
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           PHP Unit -> ${{ env.PHP_UNIT_ERRORS_COUNT }} errors found. Please fix them before merging.
 
-    - name: Break the build if there are errors
+    - name: Break if there are PHP Unit errors
       run: |
-        if [ ${{env.PHP_STAN_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
         if [ ${{env.PHP_UNIT_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
