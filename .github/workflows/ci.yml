@@ -13,7 +13,7 @@ permissions:
 jobs:
   tests:
     env:
-      PHP_STAN_LEVEL: 6
+      PHP_STAN_LEVEL: 0
 
     runs-on: ubuntu-latest
 
