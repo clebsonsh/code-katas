@@ -32,7 +32,7 @@ jobs:
     - name: Run PHP Stan and save output to file
       uses: GuillaumeFalourd/command-output-file-action@v1.1
       env:
-        PHP_STAN_LEVEL: 0
+        PHP_STAN_LEVEL: 7
       with:
         command_line: vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src
         output_file_name: phpstan.txt
