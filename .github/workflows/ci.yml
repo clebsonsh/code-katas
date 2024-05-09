@@ -38,11 +38,13 @@ jobs:
         echo "PHP_STAN_ERRORS_COUNT=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src | grep ::error | wc -l)" >> $GITHUB_ENV
       continue-on-error: true
 
-    - uses: mainmatter/continue-on-error-comment@v1
+    - name: Comment PR
+      if: env.PHP_STAN_ERRORS_COUNT > 0
+      uses: thollander/actions-comment-pull-request@v2
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        outcome: ${{ steps.phpstan.outcome }}
-        test-id: PHPStan -> ${{ env.PHP_STAN_ERRORS_COUNT }} errors found
+        message: |
+          PHPStan found ${{env.PHP_STAN_ERRORS_COUNT}} errors in your code. Please fix them before merging. 
+
 
     - name: Run test suite
       id: tests
@@ -50,11 +52,12 @@ jobs:
         echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage | grep 'Tests:')" >> $GITHUB_ENV
       continue-on-error: true
 
-    - uses: mainmatter/continue-on-error-comment@v1
+    - name: Comment PR
+      if: env.PHPUNIT_ERRORS != ''
+      uses: thollander/actions-comment-pull-request@v2
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        outcome: ${{ steps.tests.outcome }}
-        test-id: PHP Unit -> ${{ env.PHPUNIT_ERRORS }}
+        message: |
+          PHP Unit -> ${{ env.PHPUNIT_ERRORS }}
 
     - name: Break the build if there are errors
       run: |
