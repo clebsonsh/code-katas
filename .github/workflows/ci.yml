@@ -36,6 +36,8 @@ jobs:
         PHP_STAN_LEVEL: 6
       run: |
         echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')" >> $GITHUB_ENV
+        echo "Is PHP_STAN_ERRORS empty?"
+        echo $PHP_STAN_ERRORS == ""
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
