@@ -38,6 +38,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
+        test-id: Error code PHPStan
 
     - name: Run test suite
       id: test
@@ -48,3 +49,4 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.test.outcome }}
+        test-id: Error code Pest
