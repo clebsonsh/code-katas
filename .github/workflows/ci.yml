@@ -49,10 +49,14 @@ jobs:
         message: |
           PHPStan -> ${{env.PHP_STAN_ERRORS_COUNT}} errors found. Please fix them before merging.
 
+    - uses: GuillaumeFalourd/command-output-file-action@v1.1
+      with:
+        command_line: vendor/bin/pest --no-coverage 
+        output_file_name: phpunit.txt
 
     - name: Run test suite
       run: |
-        echo "PHP_UNIT_ERRORS_COUNT=$(vendor/bin/pest --no-coverage | grep FAILED | wc -l)" >> $GITHUB_ENV
+        echo "PHP_UNIT_ERRORS_COUNT=$(cat ./phpunit.txt | grep FAILED | wc -l)" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Comment PR
