@@ -35,7 +35,7 @@ jobs:
       env: 
         PHP_STAN_LEVEL: 6
       run: |
-        PHP_STAN_ERRORS="$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')"
+        PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')
         vendor/bin/phpstan analyse -l ${{env.PHP_STAN_LEVEL}} src
       continue-on-error: true
 
