@@ -36,6 +36,7 @@ jobs:
         PHP_STAN_LEVEL: 6
       run: |
         echo "PHP_STAN_ERRORS_COUNT=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src | grep ::error | wc -l)" >> $GITHUB_ENV
+        if [ ${{env.PHP_STAN_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
@@ -48,6 +49,7 @@ jobs:
       id: tests
       run: |
         echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage | grep 'Tests:')" >> $GITHUB_ENV
+        if [ -z "${{env.PHPUNIT_ERRORS}}" ]; then exit 1; fi
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
@@ -55,3 +57,8 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.tests.outcome }}
         test-id: PHP Unit -> ${{ env.PHPUNIT_ERRORS }}
+
+    - name: Clean up
+      run: |
+        if [ ${{env.PHP_STAN_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
+        if [ -z "${{env.PHPUNIT_ERRORS}}" ]; then exit 1; fi
