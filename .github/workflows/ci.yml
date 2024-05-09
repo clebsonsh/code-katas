@@ -39,15 +39,8 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: Error code PHPStan
+        test-id: "PHPStan errors: \n ${{join(steps.phpstan.outputs.*, '\n')}}"
 
     - name: Run test suite
       id: test
       run: vendor/bin/pest
-      continue-on-error: true
-
-    - uses: mainmatter/continue-on-error-comment@v1
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        outcome: ${{ steps.test.outcome }}
-        test-id: Error code Pest
