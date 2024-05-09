@@ -32,14 +32,18 @@ jobs:
 
     - name: PHPStan
       id: phpstan
-      run: vendor/bin/phpstan analyse -l 0 src
+      env: 
+        PHP_STAN_LEVEL: 6
+      run: |
+        PHP_STAN_ERRORS="$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')"
+        vendor/bin/phpstan analyse -l ${{env.PHP_STAN_LEVEL}} src
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: PHPStan found errors
+        test-id: ${{ steps.phpstan.outputs.PHP_STAN_ERRORS }}
 
     - name: Run test suite
       id: test
