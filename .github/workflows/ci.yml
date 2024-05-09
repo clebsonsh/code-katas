@@ -8,6 +8,6 @@ on:
 
 jobs:
   phpstan:
-    uses: clebsonsh/workflows/php-stan.yml@main
+    uses: clebsonsh/workflows/.github/workflows/php-stan.yml@main
   phpunit:
-    uses: clebsonsh/workflows/php-unit.yml@main
+    uses: clebsonsh/workflows/.github/workflows/php-unit.yml@main
