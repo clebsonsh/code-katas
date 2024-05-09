@@ -48,7 +48,7 @@ jobs:
     - name: Run test suite
       id: tests
       run: |
-        echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage) | grep 'Tests:'" >> $GITHUB_ENV
+        echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage | grep 'Tests:')" >> $GITHUB_ENV
         vendor/bin/pest
       continue-on-error: true
 
@@ -56,4 +56,4 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.tests.outcome }}
-        test-id: PHPStan -> ${{ env.PHPUNIT_ERRORS }}
+        test-id: PHP Unit -> ${{ env.PHPUNIT_ERRORS }}
