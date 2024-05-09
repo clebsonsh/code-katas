@@ -40,8 +40,8 @@ jobs:
     
     - name: PHP Stan Erros Count and Show Errors
       run: |
-        echo "PHP_STAN_ERRORS_COUNT=$(${{env.PHP_STAN_ERRORS}} | grep ::error | wc -l)"
-        echo ${{env.PHP_STAN_ERRORS}}
+        echo "PHP_STAN_ERRORS_COUNT=$(echo "${{env.PHP_STAN_ERRORS}}" | grep ::error | wc -l)"
+        echo "${{env.PHP_STAN_ERRORS}}""
 
     - name: Comment PR
       if: env.PHP_STAN_ERRORS_COUNT > 0
