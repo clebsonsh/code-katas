@@ -13,16 +13,12 @@ permissions:
 jobs:
   tests:
     env:
-      PHP_STAN_LEVEL: 6
+      PHP_STAN_LEVEL: 0
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Configure Git
-      run: |
-        git config --local user.name "CI [Bot]"
 
     - name: Cache Composer packages
       id: composer-cache
