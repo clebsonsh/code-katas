@@ -35,7 +35,7 @@ jobs:
       env: 
         PHP_STAN_LEVEL: 6
       run: |
-        echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress --error-format=prettyJson  analyse -l ${{env.PHP_STAN_LEVEL}} src)" >> $GITHUB_ENV
+        echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress --error-format=json  analyse -l ${{env.PHP_STAN_LEVEL}} src)" >> $GITHUB_ENV
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
