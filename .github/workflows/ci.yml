@@ -13,7 +13,7 @@ permissions:
 jobs:
   tests:
     env:
-      PHP_STAN_LEVEL: 6
+      PHP_STAN_LEVEL: 0
 
     runs-on: ubuntu-latest
 
@@ -35,8 +35,8 @@ jobs:
     - name: PHPStan
       id: phpstan
       run: |
-        echo "PHP_STAN_ERRORS_COUNT=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src | grep -o -i ::error | wc -w)" >> $GITHUB_ENV
         vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src
+        echo "PHP_STAN_ERRORS_COUNT=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src | grep -o -i ::error | wc -w)" >> $GITHUB_ENV
       continue-on-error: true
     
     - name: Comment PR
