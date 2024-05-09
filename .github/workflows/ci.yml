@@ -35,14 +35,14 @@ jobs:
       env: 
         PHP_STAN_LEVEL: 6
       run: |
-        echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress --error-format=json  analyse -l ${{env.PHP_STAN_LEVEL}} src)" >> $GITHUB_ENV
+        echo "PHP_STAN_ERRORS_COUNT=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src | grep ::error | wc -l)" >> $GITHUB_ENV
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: PHPStan -> ${{ env.PHP_STAN_ERRORS }}
+        test-id: PHPStan -> ${{ env.PHP_STAN_ERRORS_COUNT }}
 
     - name: Run test suite
       id: tests
