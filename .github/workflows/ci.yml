@@ -49,7 +49,7 @@ jobs:
       id: tests
       run: |
         echo "PHPUNIT_OUTPUT=$(vendor/bin/pest --no-coverage)" >> $GITHUB_ENV
-        echo "PHPUNIT_ERROS=$(${{ env.PHPUNIT_OUTPUT }} | grep "Tests:)" >> $GITHUB_ENV
+        echo "PHPUNIT_ERROS=$(echo ${{ env.PHPUNIT_OUTPUT }} | grep 'Tests:')" >> $GITHUB_ENV
         echo ${{ env.PHPUNIT_OUTPUT }}
       continue-on-error: true
 
