@@ -43,8 +43,17 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: ${{ env.PHP_STAN_ERRORS }}
+        test-id: PHPStan -> ${{ env.PHP_STAN_ERRORS }}
 
     - name: Run test suite
-      id: test
-      run: vendor/bin/pest
+      id: tests
+      run: |
+        echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage) | grep 'Tests:'" >> $GITHUB_ENV
+        vendor/bin/pest
+      continue-on-error: true
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        outcome: ${{ steps.tests.outcome }}
+        test-id: PHPStan -> ${{ env.PHPUNIT_ERRORS }}
