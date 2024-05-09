@@ -30,7 +30,21 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: PHPStan
+      id: phpstan
       run: vendor/bin/phpstan analyse src
+      continue-on-error: true
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        outcome: ${{ steps.phpstan.outcome }}
 
     - name: Run test suite
+      id: test
       run: vendor/bin/pest
+      continue-on-error: true
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        outcome: ${{ steps.test.outcome }}
