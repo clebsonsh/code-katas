@@ -30,23 +30,16 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
-    - name: PHPStan Static Analysis
+    - name: PHPStan
       id: phpstan
-      uses: php-actions/phpstan@v3
-      with:
-        path: src/ tests/
-        level: 6
+      run: vendor/bin/phpstan analyse -l 6 src tests
       continue-on-error: true
-    # - name: PHPStan
-    #   id: phpstan
-    #   run: vendor/bin/phpstan analyse -l 6 src
-    #   continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: ${{ toJson(steps.phpstan) }}
+        test-id: PHPStan found errors
 
     - name: Run test suite
       id: test
