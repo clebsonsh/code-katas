@@ -39,7 +39,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: PHPStan errors - ${{ steps.phpstan.outputs.stdout }}
+        test-id: ${{ steps.phpstan.outcome }}
 
     - name: Run test suite
       id: test
