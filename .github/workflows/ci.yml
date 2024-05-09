@@ -36,7 +36,6 @@ jobs:
         PHP_STAN_LEVEL: 6
       run: |
         echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')" >> $GITHUB_ENV
-        vendor/bin/phpstan analyse -l ${{env.PHP_STAN_LEVEL}} src
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
@@ -48,9 +47,7 @@ jobs:
     - name: Run test suite
       id: tests
       run: |
-        echo "PHPUNIT_OUTPUT=$(vendor/bin/pest --no-coverage)" >> $GITHUB_ENV
-        echo "PHPUNIT_ERROS=$(echo ${{ env.PHPUNIT_OUTPUT }} | grep 'Tests:')" >> $GITHUB_ENV
-        echo ${{ env.PHPUNIT_OUTPUT }}
+        echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage | grep 'Tests:')" >> $GITHUB_ENV
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
