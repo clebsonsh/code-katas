@@ -40,7 +40,7 @@ jobs:
     
     - name: PHP Stan Erros Count and Show Errors
       run: |
-        echo ${{env.PHP_STAN_ERRORS}}
+        echo "${{env.PHP_STAN_ERRORS}}"
         echo "PHP_STAN_ERRORS_COUNT=$(echo '${{env.PHP_STAN_ERRORS}}' | grep -o -i ::error | wc -l)" >> $GITHUB_ENV
 
     - name: Comment PR
