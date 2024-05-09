@@ -31,7 +31,7 @@ jobs:
 
     - name: PHPStan
       id: phpstan
-      run: vendor/bin/phpstan analyse src
+      run: vendor/bin/phpstan analyse -l 6 src
       continue-on-error: true
 
     - uses: mainmatter/continue-on-error-comment@v1
