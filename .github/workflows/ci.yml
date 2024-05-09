@@ -49,17 +49,17 @@ jobs:
     - name: Run test suite
       id: tests
       run: |
-        echo "PHPUNIT_ERRORS=$(vendor/bin/pest --no-coverage | grep 'Tests:')" >> $GITHUB_ENV
+        echo "PHP_UNIT_ERRORS_COUNT=$(vendor/bin/pest --no-coverage | grep FAILED | wc -l)" >> $GITHUB_ENV
       continue-on-error: true
 
     - name: Comment PR
-      if: env.PHPUNIT_ERRORS != ''
+      if: env.PHP_UNIT_ERRORS_COUNT > 0
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
-          PHP Unit -> ${{ env.PHPUNIT_ERRORS }}
+          PHP Unit -> ${{ env.PHP_UNIT_ERRORS_COUNT }} errors found. Please fix them before merging.
 
     - name: Break the build if there are errors
       run: |
         if [ ${{env.PHP_STAN_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
-        if [ -z "${{env.PHPUNIT_ERRORS}}" ]; then exit 1; fi
+        if [ ${{env.PHP_UNIT_ERRORS_COUNT}} -gt 0 ]; then exit 1; fi
