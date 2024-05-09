@@ -35,7 +35,7 @@ jobs:
       env: 
         PHP_STAN_LEVEL: 6
       run: |
-        PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')
+        echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress analyse -l ${{env.PHP_STAN_LEVEL}} src | grep '[ERROR]')" >> $GITHUB_ENV
         vendor/bin/phpstan analyse -l ${{env.PHP_STAN_LEVEL}} src
       continue-on-error: true
 
@@ -43,7 +43,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.phpstan.outcome }}
-        test-id: ${{ steps.phpstan.outputs.PHP_STAN_ERRORS }}
+        test-id: ${{ env.PHP_STAN_ERRORS }}
 
     - name: Run test suite
       id: test
