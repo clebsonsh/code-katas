@@ -36,13 +36,11 @@ jobs:
       id: phpstan
       run: |
         echo "PHP_STAN_ERRORS=$(vendor/bin/phpstan --no-progress --error-format=github  analyse -l ${{env.PHP_STAN_LEVEL}} src )" >> $GITHUB_ENV
-        echo "$PHP_STAN_ERRORS"
       continue-on-error: true
     
     - name: PHP Stan Erros Count and Show Errors
       run: |
-        echo "${{env.PHP_STAN_ERRORS}}"
-        echo "PHP_STAN_ERRORS_COUNT=$(echo '${{env.PHP_STAN_ERRORS}}' | grep -o -i ::error | wc -l)" >> $GITHUB_ENV
+        echo "PHP_STAN_ERRORS_COUNT=$(echo '${{env.PHP_STAN_ERRORS}}' | grep -o -i ::error | wc -w)" >> $GITHUB_ENV
 
     - name: Comment PR
       if: env.PHP_STAN_ERRORS_COUNT > 0
