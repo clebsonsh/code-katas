@@ -8,7 +8,7 @@ it('returns a array of prime factors', function (int $number, array $expected) {
 
 dataset('factors', [
     [1, [1]],
-    [2, [2]],
+    [2, [2, 4]],
     [3, [3]],
     [4, [2, 2]],
     [5, [5]],
