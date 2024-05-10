@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "*" ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   phpstan:
     uses: clebsonsh/workflows/.github/workflows/php-stan.yml@main
