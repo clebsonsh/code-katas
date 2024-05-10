@@ -14,9 +14,9 @@ jobs:
   phpstan:
     uses: clebsonsh/workflows/.github/workflows/php-stan.yml@main
     with:
-      PHP_STAN_LEVEL: 0
+      PHP_STAN_LEVEL: 7
       STOP_ON_ERROR: true
   phpunit:
     uses: clebsonsh/workflows/.github/workflows/php-unit.yml@main
     with:
-      STOP_ON_ERROR: false
+      STOP_ON_ERROR: true
