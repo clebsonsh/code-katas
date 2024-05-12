@@ -2,8 +2,6 @@
 
 use App\StringCalculator;
 
-use Exception;
-
 it('evaluates a empty string as 0', function () {
     $calculator = new StringCalculator();
 
